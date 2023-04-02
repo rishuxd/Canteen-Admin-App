@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { getItemList, deleteItem } from "../service/api";
 
 import {
   View,
@@ -13,22 +14,22 @@ import {
 const Items = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
-  const [items, setItems] = useState([]);
-  useEffect(() => {
-    getItems();
-  }, [isFocused]);
-  const getItems = () => {};
 
-  const deleteItem = (docId) => {
-    firestore()
-      .collection("items")
-      .doc(docId)
-      .delete()
-      .then(() => {
-        console.log("User deleted!");
-        getItems();
-      });
+  const [items, setItems] = useState([]);
+
+  const fetchMyAPI = async () => {
+    const data = await getItemList();
+    setItems(data);
   };
+
+  useEffect(() => {
+    fetchMyAPI();
+  }, [isFocused, fetchMyAPI]);
+
+  const handleDelete = (data) => {
+    deleteItem(data);
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -36,20 +37,12 @@ const Items = () => {
         renderItem={({ item, index }) => {
           return (
             <View style={styles.itemView}>
-              <Image
-                source={{ uri: item.data.imageUrl }}
-                style={styles.itemImage}
-              />
+              <Image source={{ uri: item.url }} style={styles.itemImage} />
               <View style={styles.nameView}>
-                <Text style={styles.nameText}>{item.data.name}</Text>
-                <Text style={styles.descText}>{item.data.description}</Text>
+                <Text style={styles.nameText}>{item.name}</Text>
+                <Text style={styles.descText}>{item.ingredients}</Text>
                 <View style={styles.priceView}>
-                  <Text style={styles.priceText}>
-                    {"$" + item.data.discountPrice}
-                  </Text>
-                  <Text style={styles.discountText}>
-                    {"$" + item.data.price}
-                  </Text>
+                  <Text style={styles.priceText}>{"$" + item.price}</Text>
                 </View>
               </View>
               <View style={{ margin: 10 }}>
@@ -68,7 +61,7 @@ const Items = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    deleteItem(item.id);
+                    handleDelete(item);
                   }}
                 >
                   <Image
@@ -90,6 +83,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   itemView: {
     flexDirection: "row",
     width: "90%",
@@ -101,39 +95,40 @@ const styles = StyleSheet.create({
     height: 100,
     marginBottom: 10,
   },
+
   itemImage: {
     width: 90,
     height: 90,
     borderRadius: 10,
     margin: 5,
   },
+
   nameView: {
     width: "53%",
     margin: 10,
   },
+
   priceView: {
     flexDirection: "row",
     alignItems: "center",
   },
+
   nameText: {
     fontSize: 18,
     fontWeight: "700",
   },
+
   descText: {
     fontSize: 14,
-    fontWeight: "600",
+    color: "grey",
   },
+
   priceText: {
     fontSize: 18,
     color: "green",
     fontWeight: "700",
   },
-  discountText: {
-    fontSize: 17,
-    fontWeight: "600",
-    textDecorationLine: "line-through",
-    marginLeft: 5,
-  },
+
   icon: {
     width: 24,
     height: 24,

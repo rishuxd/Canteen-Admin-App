@@ -17,3 +17,20 @@ export const addItem = async (data) => {
     console.log("Error while calling Add Item API ", error);
   }
 };
+
+export const deleteItem = async (data) => {
+  try {
+    return await axios.post(`${URL}/delProducts`, data);
+  } catch (error) {
+    console.log("Error while calling Delete Item API ", error);
+  }
+};
+
+export const getItemList = async () => {
+  try {
+    const { data } = await axios.get(`${URL}/getProducts`);
+    return data;
+  } catch (error) {
+    console.log("Error while calling Get ItemList API", error);
+  }
+};
