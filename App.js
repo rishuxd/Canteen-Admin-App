@@ -3,9 +3,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "react-native";
 import { Provider } from "react-redux";
 
-import Login from "./Screens/Login";
-import Orders from "./Screens/Orders";
 import store from "./redux/store";
+import Login from "./Screens/Login";
+import Dashboard from "./Screens/Dashboard";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +15,7 @@ export default function App() {
       <NavigationContainer>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={Orders} />
+          <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
       </NavigationContainer>

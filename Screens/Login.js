@@ -25,7 +25,7 @@ const Login = ({ navigation }) => {
   const loginUser = async (navigation) => {
     let response = await authenticateAdminLogin(login);
     if (response.status === 200) {
-      navigation.navigate("Home");
+      navigation.navigate("Dashboard");
       console.log("good");
     } else {
       setLoginError(true);

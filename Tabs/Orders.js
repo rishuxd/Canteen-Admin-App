@@ -34,10 +34,8 @@ const Orders = () => {
 const FoodInfo = (props) => (
   <View style={{ marginLeft: 10 }}>
     <Text style={styles.titleStyle}>{props.food.name}</Text>
-    <Text style={{ fontSize: 12, color: "#666666" }}>
-      {props.food.allergenAlert}
-    </Text>
-    <Text>₹{props.food.price.full}</Text>
+    <Text style={{ color: "#666666" }}>Quantity: {props.food.quantity}</Text>
+    <Text>Total: ₹{props.food.price.full * props.food.quantity}</Text>
   </View>
 );
 
@@ -50,7 +48,6 @@ const FoodImage = ({ ...props }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "red",
   },
 
   foodImage: {

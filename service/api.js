@@ -9,3 +9,11 @@ export const authenticateAdminLogin = async (data) => {
     console.log("Error while calling Admin Login API");
   }
 };
+
+export const addItem = async (data) => {
+  try {
+    return await axios.post(`${URL}/addProducts`, data);
+  } catch (error) {
+    console.log("Error while calling Add Item API ", error);
+  }
+};
